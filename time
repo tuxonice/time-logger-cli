@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+use app\tools\Route;
+
+require 'Route.php';
+
+$type = $argv[1] ?? '';
+$action = $argv[2] ?? '';
+$arg = $argv[3] ?? null;
+
+$route = new Route();
+$route->route($type, $action, $arg);
