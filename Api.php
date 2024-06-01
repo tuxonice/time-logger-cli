@@ -115,6 +115,35 @@ class Api
         $this->makeRequest($method, $url, $token, json_encode($data));
     }
 
+    public function exportProject(): void
+    {
+        $config = json_decode(file_get_contents('.config.json'), true);
+        $token = $config['token'];
+        $method = 'GET';
+        $baseUrl = $config['baseUrl'];
+        $projectId = $config['currentProjectId'];
+        $url =  $baseUrl . '/projects/' . $projectId . '/export';
+
+        $response = $this->makeRequest($method, $url, $token);
+
+        echo($response);
+    }
+
+    public function exportTask(): void
+    {
+        $config = json_decode(file_get_contents('.config.json'), true);
+        $token = $config['token'];
+        $method = 'GET';
+        $baseUrl = $config['baseUrl'];
+        $projectId = $config['currentProjectId'];
+        $taskId = $config['currentTaskId'];
+        $url =  $baseUrl . '/projects/' . $projectId . '/tasks/'. $taskId .'/export';
+
+        $response = $this->makeRequest($method, $url, $token);
+
+        echo($response);
+    }
+
     public function startBooking(): void
     {
         $config = json_decode(file_get_contents('.config.json'), true);
@@ -133,7 +162,7 @@ class Api
         file_put_contents('.config.json', json_encode($config, JSON_PRETTY_PRINT));
     }
 
-    public function endBooking(string $description): void
+    public function stopBooking(string $description): void
     {
         $config = json_decode(file_get_contents('.config.json'), true);
         $token = $config['token'];
@@ -143,7 +172,7 @@ class Api
         $taskId = $config['currentTaskId'];
         $key = $config['currentKey'];
 
-        $url =  $baseUrl . '/projects/' . $projectId . '/tasks/' . $taskId . '/bookings/end';
+        $url =  $baseUrl . '/projects/' . $projectId . '/tasks/' . $taskId . '/bookings/stop';
 
         $data = [
             'key' => $key,
@@ -166,8 +195,10 @@ class Api
             $command .= " --data-raw '$data'";
         }
 
-        $result = system($command);
+        passthru($command);
+        $output = ob_get_contents();
         ob_clean();
-        return $result;
+
+        return $output;
     }
 }

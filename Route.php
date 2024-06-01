@@ -48,6 +48,9 @@ class Route
             case 'create':
                 $this->timeLoggerApi->createProject($argument);
                 break;
+            case 'export':
+                $this->timeLoggerApi->exportProject();
+                break;
             default:
                 echo('Invalid arguments');
         }
@@ -65,6 +68,9 @@ class Route
             case 'create':
                 $this->timeLoggerApi->createTask($argument);
                 break;
+            case 'export':
+                $this->timeLoggerApi->exportTask();
+                break;
             default:
                 echo('Invalid arguments');
         }
@@ -77,7 +83,7 @@ class Route
                 $this->timeLoggerApi->startBooking();
                 break;
             case 'stop':
-                $this->timeLoggerApi->endBooking($argument);
+                $this->timeLoggerApi->stopBooking($argument);
                 break;
             default:
                 echo('Invalid arguments');
@@ -103,10 +109,13 @@ Available commands:
   -p list                       List projects
   -p use <project_id>           Switch to a project
   -p create <project_name>      Create a new project
+  -p export                     Export project as a CSV format
 
   -t list                       List tasks on the current project  
   -t use <task_id>              Switch to a task
   -t create <task_name>         Create a new task
+  -t export                     Export task as a CSV format
+
   -b start                      Start booking task
   -b stop <description>         Stop booking task
 EOF;
